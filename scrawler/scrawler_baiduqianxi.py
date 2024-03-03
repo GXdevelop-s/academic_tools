@@ -206,8 +206,8 @@ def internalflow_all_date(CodeDict):        # CodeDict字典里所有城市的�
 
 if __name__ == '__main__':
 
- migration_index('城市', 'city', 'in', CitiesCode)
-# migration_index('城市', 'city', 'move_out', CitiesCode)
+# migration_index('城市', 'city', 'in', CitiesCode)
+ migration_index('城市', 'city', 'out', CitiesCode)
 # migration_index('省份', 'province', 'in', ProvinceCode)
 #migration_index('省份', 'province', 'out', ProvinceCode)
 # migration_index('全国', 'country', 'in', quanguo)
