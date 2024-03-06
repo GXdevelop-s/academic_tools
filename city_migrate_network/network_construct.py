@@ -1,3 +1,5 @@
+import math
+
 import pandas as pd
 
 
@@ -5,7 +7,28 @@ def network_construct(year, trimmed_index_df, in_out_df):
     # 初始化城市迁移矩阵
     cities = trimmed_index_df['城市'].tolist()
     now_network_df = pd.DataFrame(0, index=cities, columns=cities)
-    print('ok')
+    for index, row in trimmed_index_df.iterrows():
+        # 先便利指标数据
+        city = row['城市']
+        # 监控过程
+        print(f'正在处理{city}的迁入数据！')
+        city_index = row[year]
+        for index, row in in_out_df.iterrows():
+            # 再遍历对应关系
+            if row['年份'] != int(year):  # 如果年份对不上就不处理本行对应关系
+                continue
+            if row['地区A'] == city:  # 年份和城市都对应上了就继续分配
+                out_city = row['地区B']
+                in_city = city
+                proportion = row['B迁入A占迁入A总人口的比值-年均值']
+                # 计算对应的指标
+                corresponding_index = city_index * proportion
+                # 第一列是迁出城市，第一行是迁入城市
+                now_network_df.loc[out_city,in_city] = corresponding_index
+            else:
+                # 城市没对应上
+                continue
+        print(now_network_df)
     return now_network_df
 
 
@@ -43,14 +66,23 @@ def migrate_index_trim_sum(input_df):
 
 if __name__ == '__main__':
     original_migrate_index_df = pd.read_excel('../scrawler/城市迁入规模指数.xlsx', engine='openpyxl', sheet_name='s1')
+    # 将日期度量转化为年份度量并计算平均值
     trimmed_migrate_index_df = migrate_index_trim_sum(original_migrate_index_df)
     # 构建网络矩阵
-    years = trimmed_migrate_index_df.columns[1:]
     corresponding_in_out_df = pd.read_csv(
         '/Users/gaoxu/uni/科研/人口迁徙数据-城市间（2020-2023.10）/整理数据/百度迁徙-地区间-迁入迁出年度明细数据（2020.1-2023.11）.csv')
+    corresponding_in_out_df = corresponding_in_out_df[['年份', '地区A', '地区B', 'B迁入A占迁入A总人口的比值-年均值']]
+    #   得到指标年份和迁徙关系年份的交集
+    years_in_index = trimmed_migrate_index_df.columns[1:]  # 含有指标的所有年份
+    years_in_csv = corresponding_in_out_df['年份'].drop_duplicates().tolist()  # 有对应迁徙关系的所有年份
+    set1 = set(str(int(year)) for year in years_in_csv if not math.isnan(year))  # 转换 set1 中的元素为字符串，并移除 nan
+    set2 = set(years_in_index)
+    intersection_year = set1.intersection(set2)
+    years = list(intersection_year)
     # 网络矩阵
     networks = []
     for year in years:
         this_year_index = trimmed_migrate_index_df[['城市', year]]
         tmp_network = network_construct(year, this_year_index, corresponding_in_out_df)
         networks.append(tmp_network)
+    # 持久化存储
