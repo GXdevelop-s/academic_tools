@@ -11,7 +11,7 @@ def network_construct(year, trimmed_index_df, in_out_df):
         # 先便利指标数据
         city = row['城市']
         # 监控过程
-        print(f'正在处理{city}的迁入数据！')
+        print(f'正在处理{year}年{city}的迁入数据！')
         city_index = row[year]
         for index, row in in_out_df.iterrows():
             # 再遍历对应关系
@@ -24,11 +24,10 @@ def network_construct(year, trimmed_index_df, in_out_df):
                 # 计算对应的指标
                 corresponding_index = city_index * proportion
                 # 第一列是迁出城市，第一行是迁入城市
-                now_network_df.loc[out_city,in_city] = corresponding_index
+                now_network_df.loc[out_city, in_city] = corresponding_index
             else:
                 # 城市没对应上
                 continue
-        print(now_network_df)
     return now_network_df
 
 
@@ -59,9 +58,15 @@ def migrate_index_trim_sum(input_df):
     # 计算每个年份的总和或平均值，并将结果添加到final_df中
     for year, data in yearly_data.items():
         # 计算年度总和或平均值
-        trimmed_df[year] = data.mean(axis=1)  # 或者使用 .sun(axis=1) 来计算总和
+        trimmed_df[year] = data.mean(axis=1)  # 或者使用 .sum(axis=1) 来计算总和
 
     return trimmed_df
+
+
+def storage_network_to_excel(networks):
+    with pd.ExcelWriter('networks.xlsx') as writer:
+        for name, network_df in networks:
+            network_df.to_excel(writer, sheet_name=name, index=True)
 
 
 if __name__ == '__main__':
@@ -79,10 +84,12 @@ if __name__ == '__main__':
     set2 = set(years_in_index)
     intersection_year = set1.intersection(set2)
     years = list(intersection_year)
+    years = sorted(years, key=lambda year: int(year))  # 将字符串列表作为数字进行排序，但保留字符串格式
     # 网络矩阵
     networks = []
     for year in years:
         this_year_index = trimmed_migrate_index_df[['城市', year]]
         tmp_network = network_construct(year, this_year_index, corresponding_in_out_df)
-        networks.append(tmp_network)
+        networks.append((year, tmp_network))  # 用年份标度网络指标
     # 持久化存储
+    storage_network_to_excel(networks)
