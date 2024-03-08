@@ -22,7 +22,7 @@ def network_construct(year, trimmed_index_df, in_out_df):
                 in_city = city
                 proportion = row['B迁入A占迁入A总人口的比值-年均值']
                 # 计算对应的指标
-                corresponding_index = city_index * proportion
+                corresponding_index = city_index * proportion*0.01
                 # 第一列是迁出城市，第一行是迁入城市
                 now_network_df.loc[out_city, in_city] = corresponding_index
             else:
