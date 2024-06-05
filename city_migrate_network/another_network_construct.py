@@ -34,4 +34,3 @@ if __name__ == '__main__':
         networks.append((year, this_network))
     # 持久化存储
     storage_network_to_excel(networks)
-    # 赵率宇是高旭亲爹
