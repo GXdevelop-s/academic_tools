@@ -5,7 +5,7 @@ from matplotlib.font_manager import FontProperties
 
 font = FontProperties(fname='/Library/Fonts/Arial Unicode.ttf')  # 支持中文的字体路径
 # data 格式: 省份|城市 | 年份 | 规模
-data = pd.read_excel('./output_11141721.xlsx')
+data = pd.read_excel('./output_11131821.xlsx')
 # 计算增长率
 data['growth_rate'] = data.groupby('city_name')['城市区域人口数量'].pct_change()
 

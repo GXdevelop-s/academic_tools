@@ -6,7 +6,7 @@ from matplotlib.font_manager import FontProperties
 font = FontProperties(fname='/Library/Fonts/Arial Unicode.ttf')  # 支持中文的字体路径
 
 # 从Excel文件中加载数据
-file_path = '/Users/gaoxu/uni/科研/cityranksize/中文版本/数据/pareto_coefficients_at_least_14_2011_2021.xlsx'
+file_path = '/Users/gaoxu/uni/科研/cityranksize/中文版本/数据/pareto_coefficients_2011_2021_beyond5.xlsx'
 data_2011 = pd.read_excel(file_path, sheet_name='2011')
 data_2021 = pd.read_excel(file_path, sheet_name='2021')
 
@@ -32,5 +32,5 @@ ax.set_xticklabels(categories + 1, fontproperties=font)  # 使用1开始的编�
 ax.legend()
 
 fig.tight_layout()
-plt.savefig('/Users/gaoxu/Desktop/pareto_coefficients_plot.jpg',dpi=300)  # 指定文件名并保存到桌面
+plt.savefig('/Users/gaoxu/Desktop/pareto_coefficients_beyond5_plot.jpg',dpi=300)  # 指定文件名并保存到桌面
 plt.show()
