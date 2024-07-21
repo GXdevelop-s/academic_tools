@@ -46,17 +46,20 @@ sigma2_S_estimates = [conditional_variance(S, sizes, growth_rates, h) for S in s
 
 # 绘制人口规模与增长率均值的图
 plt.figure(figsize=(10, 6))
-plt.plot(size_grid, mu_S_estimates, label='增长率均值')
+plt.scatter(size_grid, mu_S_estimates, label='增长率均值')
 plt.xlabel('城市规模(标准化的人口)', fontproperties=font)
 plt.ylabel('增长率均值', fontproperties=font)
 plt.title('城市规模与增长率均值', fontproperties=font)
 plt.legend(prop=font)
+plt.savefig('/Users/gaoxu/Desktop/growth_rates.jpg', dpi=400)
 plt.show()
+
 # 绘制人口规模与方差的图
 plt.figure(figsize=(10, 6))
-plt.plot(size_grid, sigma2_S_estimates, label='方差')
+plt.scatter(size_grid, sigma2_S_estimates, label='方差')
 plt.xlabel('城市规模(标准化的人口)', fontproperties=font)
 plt.ylabel('方差', fontproperties=font)
 plt.title('城市规模与方差', fontproperties=font)
 plt.legend(prop=font)
+plt.savefig('/Users/gaoxu/Desktop/sigma_rates.jpg', dpi=400)
 plt.show()
