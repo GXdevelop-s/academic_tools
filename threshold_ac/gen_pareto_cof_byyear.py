@@ -13,7 +13,7 @@ def calculate_pareto_coefficient(df):
     df['rank'] = range(1, len(df) + 1)
 
     # 应用帕累托回归公式
-    df['ln_rank'] = np.log(df['rank'] - 0.5)
+    df['ln_rank'] = np.log(df['rank'])
     df['ln_size'] = np.log(df['城市区域人口数量'])
 
     # 进行OLS回归
@@ -36,4 +36,4 @@ if __name__ == '__main__':
     pareto_coefficients_df.columns = ['Year', 'Pareto_Coefficient']
 
     # 将结果保存到新的Excel文件
-    pareto_coefficients_df.to_excel('pareto_coefficients_country_byyear.xlsx', index=False)
+    pareto_coefficients_df.to_excel('no0.5pareto_coefficients_country_byyear.xlsx', index=False)
