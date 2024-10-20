@@ -1,7 +1,7 @@
 import os
 import re
 import pandas as pd
-
+# 边唯同学
 # 制造业二级分类
 manufacturing_industries = ['农副食品加工业', '食品制造业', '酒、饮料和精制茶制造业', '烟草制品业', '纺织业',
                             '纺织服装、服饰业', '皮革、毛皮、羽毛及其制品和制鞋业', '木材加工和木、竹、藤、棕、草制品业',
