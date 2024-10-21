@@ -13,7 +13,7 @@ def calculate_pareto_coefficient(df):
     df['rank'] = range(1, len(df) + 1)
 
     # 应用帕累托回归公式
-    df['ln_rank'] = np.log(df['rank'])
+    df['ln_rank'] = np.log(df['rank'])  # 改进公式将df['rank'] 改为df['rank']-0.5即可
     df['ln_size'] = np.log(df['城市区域人口数量'])
 
     # 进行OLS回归
