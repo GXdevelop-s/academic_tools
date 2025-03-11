@@ -2,43 +2,46 @@ import pandas as pd
 import numpy as np
 import statsmodels.api as sm
 
+
 def calculate_pareto_coefficient(df):
     """
-    计算帕累托系数、其显著性（p 值）及标准误差
-    :param df: DataFrame，包含某个省份某年的所有城市及其人口数据
-    :return: 帕累托系数、p 值和标准误差
+    to calculate pareto coefficient,p_value and stand error
+    :param df: DataFrame，Include all cities in a certain province and their population data for a specific year.
+    :return: pareto coefficient,p_value and stand error
     """
-    # 按人口数量降序排序并计算排名
-    df = df.sort_values(by='城市区域人口数量', ascending=False)
+    # rank by population
+    df = df.sort_values(by='urban_scale', ascending=False)
     df['rank'] = range(1, len(df) + 1)
 
-    # 应用帕累托回归公式
-    df['ln_rank'] = np.log(df['rank'])  # 改进公式将df['rank'] 改为df['rank']-0.5即可
-    df['ln_size'] = np.log(df['城市区域人口数量'])
+    # Applying the Pareto regression formula
+    df['ln_rank'] = np.log(df['rank'])  # The improved formula simply changes df['rank'] to df['rank']-0.5
+    df['ln_size'] = np.log(df['urban_scale'])
 
-    # 进行OLS回归
+    # OLS regression
     X = sm.add_constant(df['ln_size'])
     model = sm.OLS(df['ln_rank'], X)
     results = model.fit()
 
-    # 提取帕累托系数、p 值和标准误差
+    # extract pareto coefficient p_value and stand error
     pareto_coefficient = -results.params['ln_size']
     p_value = results.pvalues['ln_size']
     se = results.bse['ln_size']
 
     return pareto_coefficient, p_value, se
 
+
 if __name__ == '__main__':
-    # 加载数据
-    data = pd.read_excel('省份_年份_城市_人口_panel_data.xlsx')
+    # load data
+    data = pd.read_excel('province_year_city_population_panel_data.xlsx')
 
-    # 计算每年全国的帕累托系数、p 值和标准误差
-    results = data.groupby('年份').apply(calculate_pareto_coefficient)
+    # calculate pareto coefficient,p_value and stand error in every year
+    results = data.groupby('year').apply(calculate_pareto_coefficient)
 
-    # 将Series转换为DataFrame
+    # turn Series to DataFrame
     results_df = results.reset_index()
     results_df.columns = ['Year', 'Pareto_Coefficient_Pvalue_SE']
-    results_df[['Pareto_Coefficient', 'P_Value', 'SE']] = pd.DataFrame(results_df['Pareto_Coefficient_Pvalue_SE'].tolist(), index=results_df.index)
+    results_df[['Pareto_Coefficient', 'P_Value', 'SE']] = pd.DataFrame(
+        results_df['Pareto_Coefficient_Pvalue_SE'].tolist(), index=results_df.index)
 
-    # 将结果保存到新的Excel文件
+    # save to a new Excel file
     results_df.to_excel('pareto_coefficients_pvalues_SE_country_byyear.xlsx', index=False)

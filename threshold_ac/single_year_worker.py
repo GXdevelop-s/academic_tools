@@ -137,7 +137,7 @@ def add_rank(df):
 
 if __name__ == '__main__':
     '''
-    csv命名规范：如果是城建区域的csv 必须以   urban  开头
+    csv命名规范：如果是城视区域的csv 必须以   urban  开头
                 如果是城市总区域的csv 必须以 full开头
     '''
     start_time = time.time()
