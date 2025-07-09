@@ -18,7 +18,7 @@ def generate_province_city(excel_file_path):
 
 def init_result_df(p_c_df):
     # 创建年份 DataFrame
-    years = pd.DataFrame({'年份': range(2000, 2023)})
+    years = pd.DataFrame({'年份': range(2000, 2024)})
 
     # 进行笛卡尔积合并
     merged_df = pd.merge(p_c_df, years, how='cross')
@@ -141,8 +141,8 @@ if __name__ == '__main__':
                 如果是城市总区域的csv 必须以 full开头
     '''
     start_time = time.time()
-    excel_file_path = r'/Users/garrett/office_file/科研/城市人口数据/333个地级市名单+4个直辖市=337个地级以上行政区划（20210110）.xlsx'
-    csv_file_dir = r'/Users/garrett/office_file/科研/城市人口数据/outputs'
+    excel_file_path = r'/Users/gaoxu/uni/科研/城市人口数据/333个地级市名单+4个直辖市=337个地级以上行政区划（20210110）.xlsx'
+    csv_file_dir = r'/Users/gaoxu/uni/科研/城市人口数据/outputs'
     # 得到省份-城市的对应关系（以df表示）
     province_city_df = generate_province_city(excel_file_path=excel_file_path)
     # 读入所有的csv文件
@@ -156,7 +156,7 @@ if __name__ == '__main__':
     # 由于zipf‘s law的要求添加rank列
     final_result_df_with_rank = add_rank(final_result_df)
     # 输出成excel
-    final_result_df.to_excel("output城市区域.xlsx", index=False)
+    final_result_df.to_excel("output城市区域（加2023年）.xlsx", index=False)
     end_time = time.time()
     execute_time = end_time - start_time
     print('done!\n' * 3)

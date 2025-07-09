@@ -14,7 +14,8 @@ def calculate_pareto_coefficient(df):
     df['rank'] = range(1, len(df) + 1)
 
     # Applying the Pareto regression formula
-    df['ln_rank'] = np.log(df['rank'])  # The improved formula simply changes df['rank'] to df['rank']-0.5
+    df['ln_rank'] = np.log(
+        df['rank'])  # The improved formula (Eq. 3 in text) simply changes df['rank'] to df['rank']-0.5
     df['ln_size'] = np.log(df['urban_scale'])
 
     # OLS regression
