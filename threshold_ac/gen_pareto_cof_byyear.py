@@ -26,7 +26,8 @@ def calculate_pareto_coefficient(df):
 
 if __name__ == '__main__':
     # 加载数据
-    data = pd.read_excel('省份_年份_城市_人口_panel_data.xlsx')
+    # data = pd.read_excel('省份_年份_城市_人口_panel_data.xlsx')
+    data = pd.read_excel('省份_年份_城市_人口_panel_data_补人口2022_2023.xlsx')
 
     # 计算每年全国的帕累托系数
     pareto_coefficients = data.groupby('年份').apply(calculate_pareto_coefficient)
@@ -36,4 +37,5 @@ if __name__ == '__main__':
     pareto_coefficients_df.columns = ['Year', 'Pareto_Coefficient']
 
     # 将结果保存到新的Excel文件
-    pareto_coefficients_df.to_excel('no0.5pareto_coefficients_country_byyear.xlsx', index=False)
+    # pareto_coefficients_df.to_excel('no0.5pareto_coefficients_country_byyear.xlsx', index=False)
+    pareto_coefficients_df.to_excel('test.xlsx', index=False)

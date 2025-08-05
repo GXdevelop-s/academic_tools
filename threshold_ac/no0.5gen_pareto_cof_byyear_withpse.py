@@ -15,7 +15,7 @@ def calculate_pareto_coefficient(df):
 
     # Applying the Pareto regression formula
     df['ln_rank'] = np.log(
-        df['rank'])  # The improved formula (Eq. 3 in text) simply changes df['rank'] to df['rank']-0.5
+        df['rank']-0.5)  # The improved formula (Eq. 3 in text) simply changes df['rank'] to df['rank']-0.5
     df['ln_size'] = np.log(df['urban_scale'])
 
     # OLS regression
@@ -33,7 +33,7 @@ def calculate_pareto_coefficient(df):
 
 if __name__ == '__main__':
     # load data
-    data = pd.read_excel('province_year_city_population_panel_data.xlsx')
+    data = pd.read_excel('省份_年份_城市_人口_panel_data_2011_2021.xlsx')
 
     # calculate pareto coefficient,p_value and stand error in every year
     results = data.groupby('year').apply(calculate_pareto_coefficient)
@@ -45,4 +45,5 @@ if __name__ == '__main__':
         results_df['Pareto_Coefficient_Pvalue_SE'].tolist(), index=results_df.index)
 
     # save to a new Excel file
-    results_df.to_excel('pareto_coefficients_pvalues_SE_country_byyear.xlsx', index=False)
+    #results_df.to_excel('pareto_coefficients_pvalues_SE_country_byyear.xlsx', index=False)
+    results_df.to_excel('test.xlsx', index=False)
