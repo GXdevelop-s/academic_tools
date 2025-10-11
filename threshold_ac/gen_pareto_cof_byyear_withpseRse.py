@@ -34,7 +34,7 @@ def pareto_with_se(df, cov_type: str = "HC0", cluster_col: str | None = None) ->
 
     # 2. # Applying the Pareto regression formula
     df['ln_rank'] = np.log(
-        df['rank'] )   # The improved formula (Eq. 3 in text) simply changes df['rank'] to df['rank']-0.5
+        df['rank'] - 0.5)   # The improved formula (Eq. 3 in text) simply changes df['rank'] to df['rank']-0.5
     df['ln_size'] = np.log(df['urban_scale'])
 
     # 3. OLS regression ln(rank) = α + β·ln(size)
@@ -72,6 +72,7 @@ if __name__ == '__main__':
     # Load the panel data (province–year–city population)
     data = pd.read_excel('省份_年份_城市_人口_panel_data_2011_2021.xlsx')
 
+
     # ===== Example 1: yearly results with White HC0 robust SEs =====
     yearly_out = (
         data.groupby('year')
@@ -80,3 +81,5 @@ if __name__ == '__main__':
             .rename(columns={'year': 'Year'})
     )
     yearly_out.to_excel('test.xlsx', index=False)
+
+
